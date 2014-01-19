@@ -32,12 +32,9 @@ public class Task extends SwingWorker<Void, Void> {
         int progress = 0;
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         System.out.println("Entra");
-        frameProgressBar.setVisible(true);
-        frameProgressBar.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         EntityTransaction transaction = entityManager1.getTransaction();
         transaction.begin();
         for(progress=0; progress<1000; progress++) {
-            frameProgressBar.setProgresBarValue(progress);
             Prova prova = new Prova();
             prova.setId(progress);
             prova.setName("Nom " + progress);
@@ -45,14 +42,14 @@ public class Task extends SwingWorker<Void, Void> {
             entityManager1.persist(prova);
         }
         transaction.commit();
-        frameProgressBar.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        frameProgressBar.setVisible(false);
         System.out.println("Surt");
         return null;
     }
     
     @Override
     protected void done() {
+        frameProgressBar.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        frameProgressBar.setVisible(false);
         System.out.println("Task done");
     }    
 }

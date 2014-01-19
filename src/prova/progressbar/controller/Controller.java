@@ -44,6 +44,7 @@ public class Controller implements PropertyChangeListener {
         frameProgressBar.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         //Instances of javax.swing.SwingWorker are not reusuable, so
         //we create new instances as needed.
+        frameProgressBar.setVisible(true);
         Task task = new Task(this);
         task.addPropertyChangeListener(this);
         task.execute();
