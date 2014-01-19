@@ -20,6 +20,8 @@ public class Task extends SwingWorker<Void, Void> {
     Controller controller;
     FrameProgressBar frameProgressBar = null;
     EntityManager entityManager1 = null;
+    int progress = 0;
+        
     
     public Task(Controller controller) {
         this.controller = controller;
@@ -29,12 +31,12 @@ public class Task extends SwingWorker<Void, Void> {
     
     @Override
     protected Void  doInBackground() throws Exception {
-        int progress = 0;
+        
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         System.out.println("Entra");
         EntityTransaction transaction = entityManager1.getTransaction();
         transaction.begin();
-        for(progress=0; progress<1000; progress++) {
+        for(progress=0; progress<100000; progress++) {
             Prova prova = new Prova();
             prova.setId(progress);
             prova.setName("Nom " + progress);
