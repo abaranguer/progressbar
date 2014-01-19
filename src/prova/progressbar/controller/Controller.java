@@ -8,9 +8,6 @@ import java.awt.Cursor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import prova.progressbar.gui.*;
-import prova.progressbar.model.*;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -19,43 +16,36 @@ import javax.persistence.EntityTransaction;
 public class Controller implements PropertyChangeListener {
     FrameMainProvaProgressBar frameMainProvaProgressBar = null;
     FrameProgressBar frameProgressBar = null;
-    EntityManager entityManager1 = null;
- 
-   
+
     public void initGUI() {
         frameMainProvaProgressBar = new FrameMainProvaProgressBar(this);
         frameMainProvaProgressBar.setVisible(true);
         frameProgressBar = new FrameProgressBar();
         frameProgressBar.setVisible(false);
-        
-        entityManager1 = javax.persistence.Persistence.createEntityManagerFactory("prova-progressbarPU").createEntityManager();
-    }
-    
-    public void reset() {
-        EntityTransaction transaction = entityManager1.getTransaction();
-        transaction.begin();
-        entityManager1.createNamedQuery("Prova.deleteAll").executeUpdate();
-        transaction.commit();
-        System.out.println("reset");
     }
             
     public void loadProva() {
-        
         frameProgressBar.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        //Instances of javax.swing.SwingWorker are not reusuable, so
-        //we create new instances as needed.
         frameProgressBar.setVisible(true);
         Task task = new Task(this);
         task.addPropertyChangeListener(this);
         task.execute();
     }
-        /**
+
+    /**
      * Invoked when task's progress property changes.
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("progress" == evt.getPropertyName()) {
+        System.out.println("Evt: " + evt.getPropertyName() + "; value: " + evt.getNewValue());
+        if ("progress" == evt.getPropertyName()) {         
             int progress = (Integer) evt.getNewValue();
             frameProgressBar.setProgresBarValue(progress);
         } 
-    }      
+    }   
+    
+    public void done() {
+        frameProgressBar.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        frameProgressBar.setVisible(false);
+        System.out.println("Task done");
+    }
 }

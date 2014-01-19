@@ -33,7 +33,6 @@ public class FrameProgressBar extends javax.swing.JFrame {
 
         jLabel1.setText("Progrés de la càrrega");
 
-        jProgressBar1.setMaximum(1000);
         jProgressBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jProgressBar1.setStringPainted(true);
         jProgressBar1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {

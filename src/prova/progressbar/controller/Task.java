@@ -4,13 +4,10 @@
  */
 package prova.progressbar.controller;
 
-import java.awt.Cursor;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import javax.swing.SwingWorker;
-import prova.progressbar.model.Prova;
-import prova.progressbar.gui.FrameProgressBar;
-
 
 /**
  *
@@ -18,40 +15,38 @@ import prova.progressbar.gui.FrameProgressBar;
  */
 public class Task extends SwingWorker<Void, Void> {
     Controller controller;
-    FrameProgressBar frameProgressBar = null;
-    EntityManager entityManager1 = null;
-    int progress = 0;
         
-    
     public Task(Controller controller) {
         this.controller = controller;
-        frameProgressBar = controller.frameProgressBar; 
-        entityManager1 = javax.persistence.Persistence.createEntityManagerFactory("prova-progressbarPU").createEntityManager();
     }
     
     @Override
-    protected Void  doInBackground() throws Exception {
-        
+    protected Void  doInBackground() throws Exception {    
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        System.out.println("Entra");
-        EntityTransaction transaction = entityManager1.getTransaction();
-        transaction.begin();
-        for(progress=0; progress<100000; progress++) {
-            Prova prova = new Prova();
-            prova.setId(progress);
-            prova.setName("Nom " + progress);
-            prova.setValue("Valor " + progress);
-            entityManager1.persist(prova);
-        }
-        transaction.commit();
-        System.out.println("Surt");
+        
+        try {
+            System.out.println("Entra");
+            File file = new File("/home/albert/NetBeansProjects/prova-progressbar/file/test.txt");
+            
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+	    BufferedWriter bw = new BufferedWriter(fw);
+            
+            for(int i=0; i<1000000; i++) {
+                setProgress(i/10000);
+                bw.write("id: " + i +"; name: nom_" + i + "; value: valor_" + i+ "\n");
+            }
+	    
+            bw.close();
+            System.out.println("Surt");
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
         return null;
     }
     
     @Override
     protected void done() {
-        frameProgressBar.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        frameProgressBar.setVisible(false);
-        System.out.println("Task done");
+        controller.done();
     }    
 }
